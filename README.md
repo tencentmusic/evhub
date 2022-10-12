@@ -12,7 +12,7 @@ Evhub uses a unified event model to collect asynchronous events and distribute e
 * Multi-protocol: Supports multiple protocols, such as HTTP and gRPC
 * Support for transactional messages
 * Supports delay events, including normal delay events and delay processing events
-* Recurring events are supported, including regular recurring  events and Crontab events
+* Recurring events are supported, including regular recurring  events and crontab events
 * Supports multiple event stores: Kafka, Pulsar, Mysql, Redis, etc
 * Support for multiple microservice architectures
 * Supports high availability and easy horizontal expansion
