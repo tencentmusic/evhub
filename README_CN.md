@@ -147,9 +147,5 @@ func StartGrpcServer(serverAddr string, s *Svc) {
 ### 更多示例
 关于更多quick start的例子，可以参考 [quick-start-sample]()
 
-## 联系我们
-### 微信交流群
-如果您希望更快的获得反馈，或者更多的了解其他用户在使用过程中的各种反馈，欢迎加入我们的微信交流群
-
 
 欢迎使用[EvHub](https://github.com/tencentmusic/evhub)，欢迎star支持我们

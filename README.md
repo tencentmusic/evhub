@@ -145,10 +145,6 @@ func StartGrpcServer(serverAddr string, s *Svc) {
 ###  More examples
 If you want more quick start examples, please refer to  [quick-start-sample]()
 
-## Chat Group
-
-Join the chat via []().
-
 ## Give a star! ⭐
 
 If you think this project is interesting, or helpful to you, please give a star!
