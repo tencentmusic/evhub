@@ -1,44 +1,47 @@
 # Evhub
 
-English | [简体中文](README_CN.md)
+简体中文 | [English](README.md)
 
-
-## Infra
+## 整体架构
 ![img.png](./docs/img/evhub.png)
 
-Evhub uses a unified event model to collect asynchronous events and distribute events to application scenarios, thus decoupling the upstream and downstream systems. Support real-time, delay, loop and transaction event scenarios, to achieve high real-time, high reliable general event components.
-
-## Features
-* Multi-protocol: Supports multiple protocols, such as HTTP and gRPC
-* Support for transactional messages
-* Supports delay events, including normal delay events and delay processing events
-* Recurring events are supported, including regular recurring  events and Crontab events
-* Supports multiple event stores: Kafka, Pulsar, Mysql, Redis, etc
-* Support for multiple microservice architectures
-* Supports high availability and easy horizontal expansion
+事件中心通过统一的事件模型，收归异步事件，分发事件到应用场景，达到解耦上下游系统的目的。支持实时，延时、循环以及事务等事件场景，实现了高实时性，高可靠的通用事件组件。
 
 
-## Application scenarios.
-EvHub can be applied to data consistency problems in a large number of scenarios,here are a few common ones
-* Peak cut
-* Broadcast
-* Cache management
-* System decoupling, event driven: Greatly simplifying the architectural complexity
-* Distributed transaction
+## 特性
+* 支持多协议：支持http、gRPC等多种协议
+* 支持事务消息
+* 支持延时事件，包括普通延迟事件和延迟处理事件
+* 支持循环事件，包括普通循环事件和crontab事件
+* 支持多种事件存储：Kafka、Pulsar、Mysql、redis等
+* 支持多种微服务架构
+* 支持高可用，易水平扩展
 
-### run EvHub
+
+## 应用场景：
+EvHub 可以应用于大量的场景下的数据一致性问题，以下是几个常见场景
+* 削峰填谷
+* 广播通知
+* 缓存管理
+* 系统解耦、事件驱动: 极大的简化了架构复杂性
+* 分布式事务问题
+
+
+### 运行EvHub
 
 ``` bash
 make start
 ```
 
-### stop EvHub
+### 停止EvHub
 
 ``` bash
 make stop
 ```
 
-### Configuration
+## 接入详解
+
+### 配置
 ```bash
 curl --location --request POST '127.0.0.1:8081/v1/producer' \
 --header 'Content-Type: application/json' \
@@ -71,7 +74,7 @@ curl --location --request POST '127.0.0.1:8081/v1/processor' \
 
 ```
 
-### Code
+### 接入代码
 ``` GO
 package main
 
@@ -141,14 +144,12 @@ func StartGrpcServer(serverAddr string, s *Svc) {
 
 ```
 
+### 更多示例
+关于更多quick start的例子，可以参考 [quick-start-sample]()
 
-###  More examples
-If you want more quick start examples, please refer to  [quick-start-sample]()
+## 联系我们
+### 微信交流群
+如果您希望更快的获得反馈，或者更多的了解其他用户在使用过程中的各种反馈，欢迎加入我们的微信交流群
 
-## Chat Group
 
-Join the chat via []().
-
-## Give a star! ⭐
-
-If you think this project is interesting, or helpful to you, please give a star!
+欢迎使用[EvHub](https://github.com/tencentmusic/evhub)，欢迎star支持我们
