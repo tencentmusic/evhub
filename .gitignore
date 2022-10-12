@@ -1,0 +1,33 @@
+# silly macs
+.DS_Store
+*.swp
+
+# ignore visual studio configuration
+.vscode
+
+# ignore jetbrains IDE configuration
+.idea
+
+**/cmd/cmd
+*.out
+*.log
+*.csv
+*.zip
+
+test
+vendor
+
+./package-lock.json
+./package.json
+./node_modules/*
+node_modules/
+package.json
+package-lock.json
+.cz-config.js
+test
+bin
+app/*/conf/config.toml
+coverage.out
+conf
+build/docker-compose/mysql-data/
+build/docker-compose/pulsar-cfg/
