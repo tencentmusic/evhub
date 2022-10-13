@@ -144,7 +144,7 @@ func StartGrpcServer(serverAddr string, s *Svc) {
 ```
 
 ### 更多示例
-关于更多quick start的例子，可以参考 [quick-start-sample]()
+关于更多quick start的例子，可以参考 [quick-start-sample](https://github.com/tencentmusic/evhub/tree/main/example)
 
 
 欢迎使用[EvHub](https://github.com/tencentmusic/evhub)，欢迎star支持我们
