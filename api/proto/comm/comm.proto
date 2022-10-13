@@ -53,11 +53,8 @@ enum TxStatus {
 enum ProtocolType {
   PROTOCOL_TYPE_INVALID = 0;
   PROTOCOL_TYPE_GRPC = 1;
-  PROTOCOL_TYPE_QZA = 2;
   PROTOCOL_TYPE_HTTP_PB = 3;
-  PROTOCOL_TYPE_TARS = 4;
   PROTOCOL_TYPE_HTTP_JSON = 5;
-  PROTOCOL_TYPE_TME = 6;
 }
 
 enum EventStatus{
@@ -105,7 +102,7 @@ message TxCallback {
 }
 
 message Endpoint {
-  // 0:invalid 1:grpc 2:qza 3:http
+  // 0:invalid 1:grpc  3:http
   ProtocolType protocol_type = 1;
   string address = 2;
   google.protobuf.Duration timeout = 3;
