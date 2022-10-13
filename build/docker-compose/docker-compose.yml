@@ -1,0 +1,96 @@
+version: '3'
+services:
+  pulsar:
+    image: apachepulsar/pulsar:2.6.0
+    restart: always
+    ports:
+      - 8080:8080
+      - 6650:6650
+    environment:
+      PULSAR_MEM: " -Xms512m -Xmx512m -XX:MaxDirectMemorySize=1g"
+    command: bin/pulsar standalone
+
+  redis:
+    image: redis
+    command: [ "--requirepass","mypassword" ]
+    ports:
+      - "8889:6379"
+
+  etcd:
+    image: 'bitnami/etcd:latest'
+    environment:
+      - ALLOW_NONE_AUTHENTICATION=yes
+      - ETCD_ADVERTISE_CLIENT_URLS=http://etcd:2379
+    ports:
+      - "2379:2379"
+      - "2380:2380"
+
+  mysql:
+    image: mysql:5.7
+    platform: linux/amd64
+    volumes:
+      - ./mysql-data:/var/lib/mysql
+      - ./sql/init.sql:/docker-entrypoint-initdb.d/init_db.sql
+    environment:
+      - MYSQL_ROOT_PASSWORD=888
+      - TZ=Asia/Shanghai
+
+  processor:
+    image: evhub/processor:latest
+    volumes:
+      - ./conf:/conf
+      - ./sql/init.sql:/mysql/init_db.sql
+    command: [ "--configName", "processor.toml" ]
+    restart: always
+    links:
+      - pulsar
+    depends_on:
+      - pulsar
+      - redis
+      - mysql
+      - etcd
+
+  delay:
+    image: evhub/processor:latest
+    volumes:
+      - ./conf:/conf
+    command: [ "--configName", "delay.toml" ]
+    restart: always
+    links:
+      - pulsar
+    depends_on:
+      - pulsar
+      - redis
+      - mysql
+      - etcd
+      - producer
+
+  producer:
+    image: evhub/producer:latest
+    volumes:
+      - ./conf:/conf
+    command: ["--configName", "producer.toml"]
+    restart: always
+    links:
+      - pulsar
+    ports:
+      - "9000:9000"
+      - "8083:8083"
+    depends_on:
+      - mysql
+      - pulsar
+      - redis
+      - etcd
+
+  admin:
+    image: evhub/admin:latest
+    volumes:
+      - ./conf:/conf
+    command: [ "--configName", "admin.toml" ]
+    ports:
+      - "8081:8081"
+    depends_on:
+      - pulsar
+      - redis
+      - mysql
+      - etcd

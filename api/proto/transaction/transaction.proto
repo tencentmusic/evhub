@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package evhub_transaction;
+
+option go_package = "evhub-api/proto/transaction";
+
+import "comm/comm.proto";
+
+service evhubTransaction {
+  rpc Callback(CallbackReq) returns (CallbackRsp);
+}
+
+message CallbackReq {
+  evhub_comm.Event event = 1;
+  evhub_comm.Tx tx = 2;
+}
+
+message CallbackRsp {
+  evhub_comm.Result ret = 1;
+  evhub_comm.TxStatus tx_status = 2;
+  evhub_comm.EventTrigger trigger = 3;
+}

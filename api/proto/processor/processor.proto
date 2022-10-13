@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package evhub_processor;
+
+option go_package = "evhub-api/proto/processor";
+
+import "comm/comm.proto";
+
+service evhubProcessor {
+  rpc Dispatch(DispatchReq) returns (DispatchRsp);
+}
+
+message DispatchReq {
+  string event_id = 1;
+  evhub_comm.Event event = 2;
+  uint32 retry_times = 3;
+  uint32 repeat_times = 4;
+  //pass back
+  bytes pass_back      = 5;
+}
+
+message DispatchRsp {
+  evhub_comm.Result ret = 2;
+  bytes pass_back      = 3;
+}

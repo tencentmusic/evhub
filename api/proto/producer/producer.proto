@@ -1,0 +1,54 @@
+syntax = "proto3";
+
+package evhub_producer;
+
+option go_package = "evhub-api/proto/producer";
+
+import "comm/comm.proto";
+
+service evhubProducer {
+  rpc Report(ReportReq) returns (ReportRsp);
+  rpc Prepare(PrepareReq) returns (PrepareRsp);
+  rpc Commit(CommitReq) returns (CommitRsp);
+  rpc Rollback(RollbackReq) returns (RollbackRsp);
+}
+
+message ReportReq {
+  evhub_comm.Event event = 1;
+  evhub_comm.EventTrigger trigger = 2;
+  evhub_comm.EventOption option = 3;
+}
+
+message ReportRsp {
+  evhub_comm.Result ret = 1;
+  string event_id = 2;
+}
+
+message PrepareReq {
+  evhub_comm.Event event = 1;
+  evhub_comm.TxCallback tx_callback = 2;
+}
+
+message PrepareRsp {
+  evhub_comm.Result ret = 1;
+  evhub_comm.Tx tx = 2;
+}
+
+message CommitReq {
+  string event_id = 1;
+  evhub_comm.EventTrigger trigger = 2;
+}
+
+message CommitRsp {
+  evhub_comm.Result ret = 1;
+  evhub_comm.Tx tx = 2;
+}
+
+message RollbackReq {
+  string event_id = 1;
+}
+
+message RollbackRsp {
+  evhub_comm.Result ret = 1;
+  evhub_comm.Tx tx = 2;
+}

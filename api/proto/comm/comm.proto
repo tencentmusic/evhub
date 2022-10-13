@@ -1,0 +1,229 @@
+syntax = "proto3";
+
+package evhub_comm;
+
+option go_package = "evhub-api/proto/comm";
+
+import "google/protobuf/duration.proto";
+import "google/protobuf/timestamp.proto";
+
+
+enum EventTriggerType {
+  //INVALID
+  EVENT_TRIGGER_TYPE_INVALID = 0;
+
+  EVENT_TRIGGER_TYPE_REAL_TIME = 1;
+
+  EVENT_TRIGGER_TYPE_DELAY = 2;
+
+  EVENT_TRIGGER_TYPE_REPEAT = 3;
+
+  EVENT_TRIGGER_TYPE_DELAY_PROCESS = 4;
+}
+
+enum EventRepeatEndType {
+  //INVALID
+  EVENT_REPEAT_END_TYPE_INVALID = 0;
+
+  EVENT_REPEAT_END_TYPE_END_BY_TIMESTAMP = 1;
+
+  EVENT_REPEAT_END_TYPE_END_BY_COUNT = 2;
+}
+
+//
+enum EventPulserType {
+  //INVALID
+  EVENT_PULSER_TYPE_INVALID = 0;
+
+  EVENT_PULSER_TYPE_BY_INTERVAL = 1;
+
+  EVENT_PULSER_TYPE_BY_CRONTAB = 2;
+}
+
+//
+enum TxStatus {
+  TX_STATUS_INVALID  = 0;
+  TX_STATUS_PREPARE  = 1;
+  TX_STATUS_COMMIT   = 2;
+  TX_STATUS_ROLLBACK = 3;
+  TX_STATUS_SUCCESS  = 4;
+}
+
+//
+enum ProtocolType {
+  PROTOCOL_TYPE_INVALID = 0;
+  PROTOCOL_TYPE_GRPC = 1;
+  PROTOCOL_TYPE_QZA = 2;
+  PROTOCOL_TYPE_HTTP_PB = 3;
+  PROTOCOL_TYPE_TARS = 4;
+  PROTOCOL_TYPE_HTTP_JSON = 5;
+  PROTOCOL_TYPE_TME = 6;
+}
+
+enum EventStatus{
+  EVENT_STATUS_INVALID = 0;                                  //INVALID
+  EVENT_STATUS_MAKING                           = 1;         //
+  EVENT_STATUS_INIT                             = 100;       //
+  EVENT_STATUS_IN_REAL_TIME_QUEUE               = 200;       //
+  EVENT_STATUS_RETEY_IN_REAL_TIME_QUEUE         = 201;       //
+  EVENT_STATUS_REPEAT_IN_REAL_TIME_QUEUE        = 202;       //
+  EVENT_STATUS_DELAY_PROCESS_IN_REAL_TIME_QUEUE = 203;       //
+  EVENT_STATUS_IN_DELAY_QUEUE                   = 300;       //
+  EVENT_STATUS_RETEY_IN_DELAY_QUEUE             = 301;       //
+  EVENT_STATUS_REPEAT_IN_DELAY_QUEUE            = 302;       //
+  EVENT_STATUS_DELAY_PROCESS_IN_DELAY_QUEUE     = 303;       //
+  EVENT_STATUS_TX_CALLBACK_IN_DELAY_QUEUE       = 304;       //
+  EVENT_STATUS_DELAY_RIGGER                     = 400;       //
+  EVENT_STATUS_WAIT_PROCESS                     = 500;       //
+  EVENT_STATUS_PROCESS_SUCC                     = 501;       //
+  EVENT_STATUS_PROCESS_FAILED                   = 502;       //
+}
+
+//
+message EventSource {
+  string source = 1;
+  string qua = 2;
+  google.protobuf.Timestamp create_time = 3;
+}
+
+//
+message EventComm {
+  EventSource event_source = 1;
+  EventTag event_tag = 2;
+}
+
+//tag
+message EventTag {
+  //tag
+  repeated string tag_list = 1;
+}
+
+//
+message TxCallback {
+  Endpoint Endpoint = 1;
+  google.protobuf.Duration callback_interval = 2;
+}
+
+message Endpoint {
+  // 0:invalid 1:grpc 2:qza 3:http
+  ProtocolType protocol_type = 1;
+  string address = 2;
+  google.protobuf.Duration timeout = 3;
+}
+
+//
+message Event {
+  string app_id = 1;
+  string topic_id = 2;
+  EventComm event_comm = 3;
+  bytes data = 4;
+}
+
+//
+message EventTrigger {
+  EventTriggerType trigger_type = 1;
+  EventDelayTrigger delay_trigger = 2;
+  EventRepeatTrigger repeat_trigger = 3;
+  repeated EventDelayProcessTrigger delay_process_trigger_list = 4;
+}
+
+//
+message EventDelayTrigger {
+  google.protobuf.Duration delay_time = 1;
+}
+
+//
+message RepeatEnd {
+
+  uint32 repeat_times = 1;
+
+  google.protobuf.Timestamp end_time = 2;
+}
+
+//
+message RegularPulser {
+  google.protobuf.Duration interval = 1;
+}
+
+//crontab
+message CrontabPulser {
+  string crontab = 1;
+}
+
+message EventRepeatTrigger {
+  google.protobuf.Timestamp begin_time = 1;
+  EventRepeatEndType end_type = 2;
+  RepeatEnd repeat_end = 3;
+  EventPulserType pulser_type = 4;
+
+  RegularPulser regular_pulser = 5;
+  CrontabPulser crontab_pulser = 6;
+}
+
+
+message EventDelayProcessTrigger {
+
+  string key = 1;
+
+  google.protobuf.Duration delay_time = 2;
+}
+
+
+message EventOption {
+  EventIdempotent idempotent = 1;
+}
+
+message EventIdempotent {
+
+  string key = 1;
+
+  google.protobuf.Duration idempotent_time = 2;
+}
+
+message evhubMsg {
+
+  string event_id = 1;
+
+  EventStatus status = 2;
+
+  Event event = 3;
+
+  EventTriggerInfo trigger_info = 4;
+
+  EventDispatcherInfo dispatcherInfo = 5;
+}
+
+
+message EventTriggerInfo {
+  EventTrigger trigger = 1;
+
+  uint32 repeat_times = 2;
+}
+
+
+message EventDispatcherInfo {
+
+  string dispatcher_id = 1;
+
+  uint32 retry_times  = 2;
+  bytes pass_back     = 3;
+}
+
+
+message Tx {
+
+  string event_id = 1;
+
+  TxStatus status = 2;
+}
+
+message Result {
+  int32 code = 1;
+  string msg = 2;
+}
+
+message  Err {
+  int32  code       = 1;
+  string msg        = 2;
+  bytes  pass_back  = 3;
+}

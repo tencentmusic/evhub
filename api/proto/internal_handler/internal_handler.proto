@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package evhub_internal_handler;
+
+option go_package = "evhub-api/proto/internal_handler";
+
+import "comm/comm.proto";
+
+service evhubInternalHandler {
+  rpc Fork(ForkReq) returns (ForkRsp);
+}
+
+message ForkReq {
+
+  evhub_comm.evhubMsg ev_hub_msg = 1;
+}
+
+message ForkRsp {
+  evhub_comm.Result ret = 1;
+}
+

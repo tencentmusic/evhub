@@ -1,0 +1,193 @@
+# golangci.com configuration
+# https://github.com/golangci/golangci/wiki/Configuration
+service:
+  golangci-lint-version: 1.28.x # use the fixed version to not introduce new linters unexpectedly
+  prepare:
+    - echo "here I can run custom commands, but no preparation needed for this repo"
+
+# options for analysis running
+run:
+  # timeout for analysis, e.g. 30s, 5m, default is 1m
+  concurrency: 5
+  timeout: 5m
+  skip-dirs:
+     - pkg/grpc
+     - test
+
+linters:
+  disable-all: true
+  enable:
+    - bodyclose
+#    - deadcode
+    - depguard
+    - dogsled
+    - dupl
+    - errcheck
+    - funlen
+    - goconst
+    - gocritic
+    - gocyclo
+    - gofmt
+    - goimports
+    - golint
+    - goprintffuncname
+    - gosec
+    - gosimple
+    - govet
+    - ineffassign
+    - interfacer
+    - lll
+    - misspell
+    - nakedret
+    - nolintlint
+    - rowserrcheck
+    - scopelint
+    - staticcheck
+    - structcheck
+    - stylecheck
+    - typecheck
+    - unconvert
+    - unparam
+#    - unused
+    - varcheck
+    - whitespace
+    - asciicheck
+    - gocognit
+    - nestif
+
+# all available settings of specific linters
+linters-settings:
+  golint:
+    # minimal confidence for issues, default is 0.8
+    min-confidence: 0
+  gocyclo:
+    # minimal code complexity to report, 30 by default (but we recommend 10-20)
+    min-complexity: 15
+  lll:
+    # max line length, lines longer will be reported. Default is 120.
+    # '\t' is counted as 1 character by default, and can be changed with the tab-width option
+    line-length: 160
+  funlen:
+    lines: 60
+    statements: 40
+
+  errcheck:
+
+    check-type-assertions: false
+
+
+    check-blank: true
+  govet:
+
+    check-shadowing: true
+
+    enable:
+    # atomicalign
+    enable-all: false
+    disable:
+    # - shadow
+    disable-all: false
+  maligned:
+
+    suggest-new: true
+
+    auto-fix: true
+
+  depguard:
+    list-type: blacklist
+    include-go-root: false
+
+  misspell:
+    # Correct spellings using locale preferences for US or UK.
+    # Default is to use a neutral variety of English.
+    # Setting locale to US will correct the British spelling of 'colour' to 'color'.
+    locale: US
+    ignore-words:
+      - someword
+
+  nakedret:
+    max-func-lines: 30
+
+  #  unused:
+  #    check-exported: true
+
+  unparam:
+    check-exported: false
+  gocritic:
+    enabled-checks:
+    disabled-checks:
+    enabled-tags:
+      - performance
+    settings: # settings passed to gocritic
+      captLocal: # must be valid enabled check name
+        paramsOnly: true
+      rangeValCopy:
+        sizeThreshold: 32
+    dupl:
+      # tokens count to trigger issue, 150 by default
+      threshold: 100
+
+  goconst:
+    # minimal length of string constant, 3 by default
+    min-len: 3
+    # minimal occurrences count to trigger, 3 by default
+    min-occurrences: 3
+
+issues:
+  # Excluding configuration per-path, per-linter, per-text and per-source
+  exclude-rules:
+    # Exclude some linters from running on tests files.
+    - linters:
+        - golint
+      text: don't use an underscore in package name
+
+    - linters:
+        - gosec
+      # G401: Use of weak cryptographic primitive
+      # G501: Blacklisted import `crypto/md5`: weak cryptographic primitive
+      text: G(401|501|108|107|404)
+
+    - linters:
+        - stylecheck
+      # ST1003: should not use underscores in package names
+      text: ST1003
+
+    - path: _test.go
+      linters:
+        - lll
+        - errcheck
+        - godox
+        - scopelint
+        - govet
+        - gocyclo
+        - unused
+        - funlen
+        - unparam
+
+    - path: pkg/grpc
+      linters:
+        - unused
+    - path: internal/producer/protocol/http/http.go
+      linters:
+        - gocritic
+        - gosimple
+        - dupl
+    - path: internal/producer/interceptor/porm/porm.go
+      linters:
+        - gocritic
+        - gosimple
+        - dupl
+    - path: pkg/http/server.go
+      linters:
+        - gocritic
+        - gosimple
+        - dupl
+        - gosec
+    - path: pkg/http/client.go
+      linters:
+        - gocritic
+        - gosimple
+        - dupl
+        - gosec
+        - golint
+        - funlen
