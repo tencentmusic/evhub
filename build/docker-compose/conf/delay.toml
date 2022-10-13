@@ -1,0 +1,34 @@
+[logconfig]
+outPUt = 70
+LogIndexName = "delay"
+AppID = "delay"
+
+
+[ConnectorConfig]
+ConnectorType = "pulsar"
+
+[ConnectorConfig.PulsarConfig]
+URL = "pulsar://pulsar:6650"
+TopicPrefix = "persistent://evhub/evhub/"
+Token = ""
+
+[RedisConfig]
+Addr = "redis:8889"
+Timeout = "500ms"
+Password = "mypassword"
+DB = 1
+
+[ConfConnectorConfig]
+ConfType = "etcd"
+
+[ConfConnectorConfig.EtcdConfig]
+EtcdEndpoints = ["etcd:2379"]
+EtcdDialTimeout = "10s"
+
+
+[ProducerConfig]
+Addr = "producer:9000"
+Timeout = "10s"
+
+[MonitorConfig]
+Addr =":8083"

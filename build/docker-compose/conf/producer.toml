@@ -1,0 +1,60 @@
+[logconfig]
+Level = 0
+outPUt = 70
+LogIndexName = "producer"
+AppID = "producer"
+
+[BizNO]
+EtcdEndpoints = ["etcd:2379"]
+EtcdDialTimeout = "10s"
+
+[RealTimeConnectorConfig]
+ConnectorType = "pulsar"
+
+[RealTimeConnectorConfig.PulsarConfig]
+URL = "pulsar://pulsar:6650"
+TopicPrefix = "persistent://public/default/"
+Token = ""
+
+[DelayConnectorConfig]
+ConnectorType = "pulsar"
+[DelayConnectorConfig.PulsarConfig]
+URL = "pulsar://pulsar:6650"
+TopicPrefix = "persistent://public/default/"
+Token = ""
+
+[TxConfig]
+RoutinePoolSize = 10
+Nonblocking = false
+
+[TxConfig.ReadDBConfig]
+UserName = "root"
+password = "888"
+Addr = "mysql:3306"
+database = "evhub"
+maxidleconns = 100
+maxopenconns = 20000
+Charset = "utf8mb4"
+
+[TxConfig.WriteDBConfig]
+UserName = "root"
+password = "888"
+Addr = "mysql:3306"
+database = "evhub"
+maxidleconns = 100
+maxopenconns = 20000
+Charset = "utf8mb4"
+
+
+[ConfConnectorConfig]
+ConfType = "etcd"
+
+[ConfConnectorConfig.EtcdConfig]
+EtcdEndpoints = ["etcd:2379"]
+EtcdDialTimeout = "10s"
+
+[HTTPServerConfig]
+Addr = ":8083"
+
+[MonitorConfig]
+Addr =":8080"

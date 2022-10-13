@@ -28,6 +28,5 @@ test
 bin
 app/*/conf/config.toml
 coverage.out
-conf
 build/docker-compose/mysql-data/
 build/docker-compose/pulsar-cfg/

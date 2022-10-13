@@ -1,0 +1,18 @@
+[logconfig]
+Level = 0
+outPUt = 70
+LogIndexName = "admin"
+AppID = "admin"
+
+[ConfConnectorConfig]
+ConfType = "etcd"
+
+[ConfConnectorConfig.EtcdConfig]
+EtcdEndpoints = ["etcd:2379"]
+EtcdDialTimeout = "10s"
+
+[HTTPServerConfig]
+Addr = ":8081"
+
+[MonitorConfig]
+Addr =":8080"
