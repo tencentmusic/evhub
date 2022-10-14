@@ -5,7 +5,7 @@ English | [简体中文](README_CN.md)
 
 ## Infra
 ![img.png](./docs/img/evhub.png)
-EvHub is an event-driven runtime that provides a unified event model, retrieves asynchronous events, and distributes events to application scenarios to decouple upstream and downstream systems. Support real-time, delay, loop and transaction event scenarios, to achieve high real-time, high reliable general event components. It makes it easy for developers to build event-driven architecture stateless microservices.
+EvHub is an event-driven runtime that provides unified event model, retrieves asynchronous events, and distributes events to application scenarios to decouple upstream and downstream systems. Support real-time, delay, loop and transaction event scenarios, to achieve high real-time, high reliable general event components. It makes it easy for developers to build event-driven architecture stateless microservices.
 ## Features
 * Multi-protocol: Supports multiple protocols, such as HTTP and gRPC
 * Support for transactional messages
