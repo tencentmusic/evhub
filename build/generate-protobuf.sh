@@ -11,8 +11,6 @@ source "${ROOT}/build/lib/util.sh"
 proto_path="${ROOT}/api"
 protoc="${ROOT}/build/lib/proto/prototool"
 
-
-
 if [ "$(evhub::util::host_os)" = 'darwin' ]; then
   	 prototool generate ./api/proto
 else
