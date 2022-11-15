@@ -238,7 +238,7 @@ func (s *Event) InternalHandler(ctx context.Context, req interface{}) (interface
 	}
 	if err = s.handler.SendMsg(ctx,
 		BrokerTopicKey(topicPrefix, in.EvhubMsg.Event.AppId,
-			in.EvhubMsg.Event.TopicId), delayTime, msgByte); err != nil {
+			in.EvhubMsg.Event.TopicId), delayTime, "", msgByte); err != nil {
 		log.With(ctx).Errorf("senMsg err err:%v req:%v", err, req)
 		return nil, err
 	}

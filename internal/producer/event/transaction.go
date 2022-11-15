@@ -286,7 +286,7 @@ func (s *Transaction) SendCallBackDelayMsg(msg *define.TxEventMsg) {
 	for i := 0; i < RetryCount; i++ {
 		// send message
 		if err = s.handler.DelayConnector.SendDelayMsg(ctx, topicutil.DelayTopic(msg.AppID,
-			msg.TopicID), b, time.Duration(msg.DelayTimeMs)*time.Millisecond); err != nil {
+			msg.TopicID), "", b, time.Duration(msg.DelayTimeMs)*time.Millisecond); err != nil {
 			log.With(ctx).Errorf("send msg err:%v msg:%+v", err, msg)
 			continue
 		}

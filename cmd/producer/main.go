@@ -6,6 +6,7 @@ import (
 	"github.com/tencentmusic/evhub/pkg/log"
 	"github.com/tencentmusic/evhub/pkg/monitor"
 	"github.com/tencentmusic/evhub/pkg/program"
+	"github.com/tencentmusic/evhub/pkg/util/codeutil"
 )
 
 func main() {
@@ -16,6 +17,7 @@ func main() {
 	}
 	// init log
 	log.Init(&opts.LogConfig)
+	log.Infof("producer init with options: %s.\n", codeutil.GetUglyJsonStr(opts))
 	// create new server of the producer
 	s, err := producer.New(opts)
 	if err != nil {

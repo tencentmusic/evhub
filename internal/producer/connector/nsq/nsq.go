@@ -29,7 +29,7 @@ func New(nodeList []string) (*Nsq, error) {
 }
 
 // SendDelayMsg is the stores that send delay events
-func (s *Nsq) SendDelayMsg(ctx context.Context, topic string, data []byte, delay time.Duration) error {
+func (s *Nsq) SendDelayMsg(ctx context.Context, topic string, key string, data []byte, delay time.Duration) error {
 	if err := s.NsqClient.SyncSendMsg(topic, data, delay); err != nil {
 		log.With(ctx).Errorf("topic=%s send data err=%s\n delay:%v", topic, err, delay)
 		return status.Errorf(errcode.DelayProduceFail, "nsq producer failed")
@@ -39,7 +39,7 @@ func (s *Nsq) SendDelayMsg(ctx context.Context, topic string, data []byte, delay
 }
 
 // SendMsg is the stores that send real-time events
-func (s *Nsq) SendMsg(ctx context.Context, topic string, data []byte) error {
+func (s *Nsq) SendMsg(ctx context.Context, topic string, key string, data []byte) error {
 	if err := s.NsqClient.SyncSendMsg(topic, data, time.Duration(0)); err != nil {
 		log.With(ctx).Errorf("topic=%s send data err=%s\n", topic, err)
 		return status.Errorf(errcode.DelayProduceFail, "nsq producer failed")
