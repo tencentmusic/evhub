@@ -42,11 +42,11 @@ enum EventPulserType {
 
 //
 enum TxStatus {
-  TX_STATUS_INVALID = 0;
-  TX_STATUS_PREPARE = 1;
-  TX_STATUS_COMMIT = 2;
+  TX_STATUS_INVALID  = 0;
+  TX_STATUS_PREPARE  = 1;
+  TX_STATUS_COMMIT   = 2;
   TX_STATUS_ROLLBACK = 3;
-  TX_STATUS_SUCCESS = 4;
+  TX_STATUS_SUCCESS  = 4;
 }
 
 //
@@ -59,21 +59,21 @@ enum ProtocolType {
 
 enum EventStatus{
   EVENT_STATUS_INVALID = 0;                                  //INVALID
-  EVENT_STATUS_MAKING = 1;         //
-  EVENT_STATUS_INIT = 100;       //
-  EVENT_STATUS_IN_REAL_TIME_QUEUE = 200;       //
-  EVENT_STATUS_RETEY_IN_REAL_TIME_QUEUE = 201;       //
-  EVENT_STATUS_REPEAT_IN_REAL_TIME_QUEUE = 202;       //
+  EVENT_STATUS_MAKING                           = 1;         //
+  EVENT_STATUS_INIT                             = 100;       //
+  EVENT_STATUS_IN_REAL_TIME_QUEUE               = 200;       //
+  EVENT_STATUS_RETEY_IN_REAL_TIME_QUEUE         = 201;       //
+  EVENT_STATUS_REPEAT_IN_REAL_TIME_QUEUE        = 202;       //
   EVENT_STATUS_DELAY_PROCESS_IN_REAL_TIME_QUEUE = 203;       //
-  EVENT_STATUS_IN_DELAY_QUEUE = 300;       //
-  EVENT_STATUS_RETEY_IN_DELAY_QUEUE = 301;       //
-  EVENT_STATUS_REPEAT_IN_DELAY_QUEUE = 302;       //
-  EVENT_STATUS_DELAY_PROCESS_IN_DELAY_QUEUE = 303;       //
-  EVENT_STATUS_TX_CALLBACK_IN_DELAY_QUEUE = 304;       //
-  EVENT_STATUS_DELAY_RIGGER = 400;       //
-  EVENT_STATUS_WAIT_PROCESS = 500;       //
-  EVENT_STATUS_PROCESS_SUCC = 501;       //
-  EVENT_STATUS_PROCESS_FAILED = 502;       //
+  EVENT_STATUS_IN_DELAY_QUEUE                   = 300;       //
+  EVENT_STATUS_RETEY_IN_DELAY_QUEUE             = 301;       //
+  EVENT_STATUS_REPEAT_IN_DELAY_QUEUE            = 302;       //
+  EVENT_STATUS_DELAY_PROCESS_IN_DELAY_QUEUE     = 303;       //
+  EVENT_STATUS_TX_CALLBACK_IN_DELAY_QUEUE       = 304;       //
+  EVENT_STATUS_DELAY_RIGGER                     = 400;       //
+  EVENT_STATUS_WAIT_PROCESS                     = 500;       //
+  EVENT_STATUS_PROCESS_SUCC                     = 501;       //
+  EVENT_STATUS_PROCESS_FAILED                   = 502;       //
 }
 
 //
@@ -207,8 +207,8 @@ message EventDispatcherInfo {
 
   string dispatcher_id = 1;
 
-  uint32 retry_times = 2;
-  bytes pass_back = 3;
+  uint32 retry_times  = 2;
+  bytes pass_back     = 3;
 }
 
 
@@ -225,7 +225,7 @@ message Result {
 }
 
 message  Err {
-  int32  code = 1;
-  string msg = 2;
-  bytes  pass_back = 3;
+  int32  code       = 1;
+  string msg        = 2;
+  bytes  pass_back  = 3;
 }
