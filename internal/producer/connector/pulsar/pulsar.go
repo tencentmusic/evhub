@@ -79,12 +79,13 @@ func (s *Pulsar) getProducer(topic string) (pulsar.Producer, error) {
 }
 
 // SendDelayMsg is the stores that send delay events
-func (s *Pulsar) SendDelayMsg(ctx context.Context, topic string, key string, data []byte, delay time.Duration) error {
+func (s *Pulsar) SendDelayMsg(ctx context.Context, topic string, orderingKey string, data []byte, delay time.Duration) error {
 	p, err := s.getProducer(topic)
 	if err != nil {
 		return err
 	}
 	msgID, err := p.Send(ctx, &pulsar.ProducerMessage{
+		Key:          orderingKey,
 		Payload:      data,
 		DeliverAfter: delay,
 	})
@@ -98,12 +99,13 @@ func (s *Pulsar) SendDelayMsg(ctx context.Context, topic string, key string, dat
 }
 
 // SendMsg is the stores that send real-time events
-func (s *Pulsar) SendMsg(ctx context.Context, topic string, key string, data []byte) error {
+func (s *Pulsar) SendMsg(ctx context.Context, topic string, orderingKey string, data []byte) error {
 	p, err := s.getProducer(topic)
 	if err != nil {
 		return err
 	}
 	msgID, err := p.Send(ctx, &pulsar.ProducerMessage{
+		Key:     orderingKey,
 		Payload: data,
 	})
 	if err != nil {

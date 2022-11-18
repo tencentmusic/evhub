@@ -7,12 +7,11 @@
 package internal_handler
 
 import (
-	reflect "reflect"
-	sync "sync"
-
 	comm "github.com/tencentmusic/evhub/pkg/gen/proto/comm"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	reflect "reflect"
+	sync "sync"
 )
 
 const (

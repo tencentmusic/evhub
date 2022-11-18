@@ -35,11 +35,11 @@ var cronParser = cron.NewParser(cron.Second |
 	cron.DowOptional | cron.Descriptor)
 
 // SendMsg is the stores that send  events
-func (s *Handler) SendMsg(ctx context.Context, brokerTopic string, delayTime time.Duration, key string, msg []byte) error {
+func (s *Handler) SendMsg(ctx context.Context, brokerTopic string, delayTime time.Duration, orderingKey string, msg []byte) error {
 	if delayTime.Milliseconds() == 0 {
-		return s.RealTimeConnector.SendMsg(ctx, brokerTopic, key, msg)
+		return s.RealTimeConnector.SendMsg(ctx, brokerTopic, orderingKey, msg)
 	}
-	return s.DelayConnector.SendDelayMsg(ctx, brokerTopic, key, msg, delayTime)
+	return s.DelayConnector.SendDelayMsg(ctx, brokerTopic, orderingKey, msg, delayTime)
 }
 
 // handleMsg is used to handle a message
@@ -117,10 +117,10 @@ func (s *Handler) makeTopicPrefix(req *define.ReportReq) (string, time.Duration)
 }
 
 func (s *Handler) makePartitionKey(in *define.ReportReq) string {
-	if in.Option == nil || in.Option.Ordering == nil {
+	if in.Option == nil {
 		return ""
 	}
-	return in.Option.Ordering.Key
+	return in.Option.OrderingKey
 }
 
 // handleForkEvhubMsg handles evhub message

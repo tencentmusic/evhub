@@ -16,9 +16,9 @@ import (
 // Connector is a store of events
 type Connector interface {
 	// SendMsg is the stores that send real-time events
-	SendMsg(ctx context.Context, topic string, key string, data []byte) error
+	SendMsg(ctx context.Context, topic string, orderingKey string, data []byte) error
 	// SendDelayMsg is the stores that send delay events
-	SendDelayMsg(ctx context.Context, topic string, key string, data []byte, delay time.Duration) error
+	SendDelayMsg(ctx context.Context, topic string, orderingKey string, data []byte, delay time.Duration) error
 	// Stop stops the connector gracefully.
 	Stop() error
 }

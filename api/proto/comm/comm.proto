@@ -168,7 +168,7 @@ message EventDelayProcessTrigger {
 
 message EventOption {
   EventIdempotent idempotent = 1;
-  EventOrdering ordering = 2;
+  string orderingKey = 2;
 }
 
 message EventIdempotent {
@@ -177,10 +177,6 @@ message EventIdempotent {
 
   google.protobuf.Duration idempotent_time = 2;
 }
-
-message EventOrdering{
-  string key = 1;
-};
 
 message evhubMsg {
 
