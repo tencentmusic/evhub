@@ -55,9 +55,9 @@ func (s *HTTP) makeReq(c *gin.Context, req interface{}) *comm.Result {
 }
 
 // handle is used to handle a request
-func (s *HTTP) handle(ctx context.Context, req interface{}) (interface{}, *comm.Result) {
+func (s *HTTP) handle(ctx context.Context, req interface{}, fullMethodName string) (interface{}, *comm.Result) {
 	rsp, err := s.H.Handler(ctx, req,
-		&handler.UnaryServerInfo{FullMethod: define.ReportEventReport})
+		&handler.UnaryServerInfo{FullMethod: fullMethodName})
 	if err != nil {
 		return rsp, &comm.Result{
 			Code: errcode.SystemErr,
@@ -80,7 +80,7 @@ func (s *HTTP) report(c *gin.Context) {
 	}
 
 	//handle
-	iRsp, ret := s.handle(c, req)
+	iRsp, ret := s.handle(c, req, define.ReportEventReport)
 	if ret != nil {
 		rsp.Ret = ret
 		return
@@ -113,7 +113,7 @@ func (s *HTTP) prepare(c *gin.Context) {
 	}
 
 	//handle
-	iRsp, ret := s.handle(c, req)
+	iRsp, ret := s.handle(c, req, define.ReportEventPrepare)
 	if ret != nil {
 		rsp.Ret = ret
 		return
@@ -146,7 +146,7 @@ func (s *HTTP) commit(c *gin.Context) {
 	}
 
 	//handle
-	iRsp, ret := s.handle(c, req)
+	iRsp, ret := s.handle(c, req, define.ReportEventCommit)
 	if ret != nil {
 		rsp.Ret = ret
 		return
@@ -179,7 +179,7 @@ func (s *HTTP) rollback(c *gin.Context) {
 	}
 
 	//handle
-	iRsp, ret := s.handle(c, req)
+	iRsp, ret := s.handle(c, req, define.ReportEventRollback)
 	if ret != nil {
 		rsp.Ret = ret
 		return

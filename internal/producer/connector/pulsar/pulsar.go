@@ -28,6 +28,7 @@ func New(url, topicPrefix string, token string) (*Pulsar, error) {
 	var err error
 	if token == "" {
 		client, err = pulsar.NewClient(pulsar.ClientOptions{
+
 			URL: url,
 		})
 	} else {
@@ -61,7 +62,8 @@ func (s *Pulsar) getProducer(topic string) (pulsar.Producer, error) {
 	v, ok := s.producerMap.Load(topic)
 	if !ok {
 		producer, err := s.client.CreateProducer(pulsar.ProducerOptions{
-			Topic: fmt.Sprintf("%v%v", s.topicPrefix, topic),
+			Topic:         fmt.Sprintf("%v%v", s.topicPrefix, topic),
+			HashingScheme: pulsar.JavaStringHash,
 		})
 		if err != nil {
 			return nil, err
@@ -77,12 +79,13 @@ func (s *Pulsar) getProducer(topic string) (pulsar.Producer, error) {
 }
 
 // SendDelayMsg is the stores that send delay events
-func (s *Pulsar) SendDelayMsg(ctx context.Context, topic string, data []byte, delay time.Duration) error {
+func (s *Pulsar) SendDelayMsg(ctx context.Context, topic string, orderingKey string, data []byte, delay time.Duration) error {
 	p, err := s.getProducer(topic)
 	if err != nil {
 		return err
 	}
 	msgID, err := p.Send(ctx, &pulsar.ProducerMessage{
+		Key:          orderingKey,
 		Payload:      data,
 		DeliverAfter: delay,
 	})
@@ -96,12 +99,13 @@ func (s *Pulsar) SendDelayMsg(ctx context.Context, topic string, data []byte, de
 }
 
 // SendMsg is the stores that send real-time events
-func (s *Pulsar) SendMsg(ctx context.Context, topic string, data []byte) error {
+func (s *Pulsar) SendMsg(ctx context.Context, topic string, orderingKey string, data []byte) error {
 	p, err := s.getProducer(topic)
 	if err != nil {
 		return err
 	}
 	msgID, err := p.Send(ctx, &pulsar.ProducerMessage{
+		Key:     orderingKey,
 		Payload: data,
 	})
 	if err != nil {

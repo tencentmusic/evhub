@@ -35,11 +35,11 @@ var cronParser = cron.NewParser(cron.Second |
 	cron.DowOptional | cron.Descriptor)
 
 // SendMsg is the stores that send  events
-func (s *Handler) SendMsg(ctx context.Context, brokerTopic string, delayTime time.Duration, msg []byte) error {
+func (s *Handler) SendMsg(ctx context.Context, brokerTopic string, delayTime time.Duration, orderingKey string, msg []byte) error {
 	if delayTime.Milliseconds() == 0 {
-		return s.RealTimeConnector.SendMsg(ctx, brokerTopic, msg)
+		return s.RealTimeConnector.SendMsg(ctx, brokerTopic, orderingKey, msg)
 	}
-	return s.DelayConnector.SendDelayMsg(ctx, brokerTopic, msg, delayTime)
+	return s.DelayConnector.SendDelayMsg(ctx, brokerTopic, orderingKey, msg, delayTime)
 }
 
 // handleMsg is used to handle a message
@@ -51,7 +51,8 @@ func (s *Handler) handleMsg(ctx context.Context, in *define.ReportReq, eventID s
 	// creates topic prefix for the event
 	topicPrefix, delayTime := s.makeTopicPrefix(in)
 	log.With(ctx).Debugf("topic prefix:%v delay time:%v", topicPrefix, delayTime)
-	if err = s.SendMsg(ctx, BrokerTopicKey(topicPrefix, in.Event.AppId, in.Event.TopicId), delayTime, b); err != nil {
+	if err = s.SendMsg(ctx, BrokerTopicKey(topicPrefix, in.Event.AppId, in.Event.TopicId),
+		delayTime, s.makePartitionKey(in), b); err != nil {
 		return err
 	}
 	return nil
@@ -113,6 +114,13 @@ func (s *Handler) makeTopicPrefix(req *define.ReportReq) (string, time.Duration)
 	default:
 	}
 	return topicPrefix, delayTime.AsDuration()
+}
+
+func (s *Handler) makePartitionKey(in *define.ReportReq) string {
+	if in.Option == nil {
+		return ""
+	}
+	return in.Option.OrderingKey
 }
 
 // handleForkEvhubMsg handles evhub message

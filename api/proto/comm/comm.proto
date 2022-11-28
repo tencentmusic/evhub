@@ -168,6 +168,7 @@ message EventDelayProcessTrigger {
 
 message EventOption {
   EventIdempotent idempotent = 1;
+  string orderingKey = 2;
 }
 
 message EventIdempotent {

@@ -52,6 +52,7 @@ func (s *DB) newEngine() (*gorm.DB, error) {
 		DontSupportRenameColumn:   true,
 		SkipInitializeWithVersion: false,
 	}), &gorm.Config{
+		Logger:                 GormLogger{},
 		PrepareStmt:            s.c.EnablePrepareStmt,
 		SkipDefaultTransaction: s.c.EnableSkipDefaultTransaction,
 	})

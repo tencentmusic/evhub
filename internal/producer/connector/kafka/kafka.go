@@ -32,6 +32,7 @@ func New(brokerList []string) (*Kafka, error) {
 	config.Producer.Retry.Max = ProducerRetryMax
 	config.Producer.Return.Successes = true
 	config.Producer.Timeout = ProducerTimeout * time.Second
+	config.Producer.Partitioner = sarama.NewHashPartitioner
 	producer, err := sarama.NewSyncProducer(brokerList, config)
 	if err != nil {
 		return nil, err
@@ -44,10 +45,11 @@ func New(brokerList []string) (*Kafka, error) {
 }
 
 // SendMsg is the stores that send real-time events
-func (s *Kafka) SendMsg(ctx context.Context, topic string, data []byte) error {
+func (s *Kafka) SendMsg(ctx context.Context, topic string, orderingKey string, data []byte) error {
 	msg := &sarama.ProducerMessage{
 		Topic: topic,
 		Value: sarama.ByteEncoder(data),
+		Key:   sarama.StringEncoder(orderingKey),
 	}
 
 	part, offset, err := s.syncProducer.SendMessage(msg)
@@ -61,7 +63,7 @@ func (s *Kafka) SendMsg(ctx context.Context, topic string, data []byte) error {
 
 // SendDelayMsg Kafka
 // Kafka does not support delayed messages
-func (s *Kafka) SendDelayMsg(ctx context.Context, topic string, data []byte, delay time.Duration) error {
+func (s *Kafka) SendDelayMsg(ctx context.Context, topic string, orderingKey string, data []byte, delay time.Duration) error {
 	return nil
 }
 
